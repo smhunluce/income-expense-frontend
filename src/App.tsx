@@ -7,6 +7,7 @@ import Register from './components/Register';
 import Logout from './components/Logout';
 import Transactions from './components/Transactions';
 import Categories from './components/Categories';
+import AddCategories from './components/AddCategories';
 import Report from './components/Report';
 
 
@@ -21,6 +22,7 @@ class App extends Component<any, any> {
                     <Route path="/logout" element={<Logout/>}/>
                     <Route path="/transactions" element={<Transactions/>}/>
                     <Route path="/categories" element={<Categories/>}/>
+                    <Route path="/categories/add" element={<AddCategories/>}/>
                     <Route path="/report" element={<Report/>}/>
                 </Routes>
             </BrowserRouter>
