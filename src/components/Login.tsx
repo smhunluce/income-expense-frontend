@@ -1,8 +1,6 @@
-import './login-register.css';
 import React, {Component, createRef} from "react";
 import apiClient from "../http-common";
 import {Link, Navigate} from "react-router-dom"
-import CONSTANTS from "../variables";
 
 export default class Login extends Component<any, any> {
     private login: any;
@@ -11,7 +9,7 @@ export default class Login extends Component<any, any> {
     private passwordFeedback: any;
     private failedLogin: any;
 
-    constructor(props) {
+    constructor(props: any) {
         super(props);
         this.login = createRef();
         this.loginFeedback = createRef();
@@ -24,22 +22,22 @@ export default class Login extends Component<any, any> {
         email_phone: '',
         password: '',
         remember_me: true,
-        loggedin: CONSTANTS.AUTHORIZED
+        loggedin: JSON.parse(localStorage.getItem('AUTHORIZED') || 'false')
     }
 
-    handleChange = event => {
+    handleChange = (event: { target: { name: string; value: string; }; }) => {
         this.setState({
             [event.target.name]: event.target.value
         });
     }
 
-    handleChecked = event => {
+    handleChecked = (event: { target: { name: any; checked: boolean; }; }) => {
         this.setState({
             [event.target.name]: event.target.checked ? 'on' : ''
         });
     }
 
-    handleSubmit = event => {
+    handleSubmit = (event: { preventDefault: () => void; }) => {
         event.preventDefault();
 
         this.login.current.classList.remove('is-invalid');
@@ -58,8 +56,7 @@ export default class Login extends Component<any, any> {
                 localStorage.setItem('access-token', res.data.token_type + " " + res.data.access_token);
                 localStorage.setItem('credentials', JSON.stringify(res.data.user));
                 localStorage.setItem('AUTHORIZED', JSON.stringify(true));
-                CONSTANTS.AUTHORIZED = true;
-                this.setState({loggedin: true})
+                window.location.reload();
             })
             .catch(error => {
                 if (error.response.status === 400) {
@@ -73,10 +70,8 @@ export default class Login extends Component<any, any> {
                             this.passwordFeedback.current.innerHTML = messages.join('<br/>');
                         }
                     }
-                    CONSTANTS.AUTHORIZED = false;
                 } else if (error.response.status === 401) {
                     this.failedLogin.current.classList.remove('d-none');
-                    CONSTANTS.AUTHORIZED = false;
                 }
             });
     }
@@ -85,6 +80,8 @@ export default class Login extends Component<any, any> {
         if (this.state.loggedin) {
             return <Navigate to="/transactions"/>
         }
+
+        require("./app.css");
         return (
             <div className="form-auth">
                 <div>

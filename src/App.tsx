@@ -4,6 +4,10 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './components/Login';
 import Register from './components/Register';
+import Logout from './components/Logout';
+import Transactions from './components/Transactions';
+import Categories from './components/Categories';
+import Report from './components/Report';
 
 
 class App extends Component<any, any> {
@@ -14,7 +18,10 @@ class App extends Component<any, any> {
                 <Routes>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/register" element={<Register/>}/>
-                    {/*<Route path="/logout" element={<Logout/>}/>*/}
+                    <Route path="/logout" element={<Logout/>}/>
+                    <Route path="/transactions" element={<Transactions/>}/>
+                    <Route path="/categories" element={<Categories/>}/>
+                    <Route path="/report" element={<Report/>}/>
                 </Routes>
             </BrowserRouter>
         );

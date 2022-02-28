@@ -1,8 +1,6 @@
-import './login-register.css';
 import React, {Component, createRef} from "react";
 import apiClient from "../http-common";
 import {Link, Navigate} from "react-router-dom"
-import CONSTANTS from "../variables";
 
 export default class Register extends Component<any, any> {
     private firstname: any;
@@ -16,7 +14,7 @@ export default class Register extends Component<any, any> {
     private phone_numberFeedback: any;
     private passwordFeedback: any;
 
-    constructor(props) {
+    constructor(props: any) {
         super(props);
         this.firstname = createRef();
         this.firstnameFeedback = createRef();
@@ -36,17 +34,17 @@ export default class Register extends Component<any, any> {
         email: '',
         phone_number: '',
         password: '',
-        loggedin: CONSTANTS.AUTHORIZED,
+        loggedin: JSON.parse(localStorage.getItem('AUTHORIZED') || 'false'),
         registered: false
     }
 
-    handleChange = event => {
+    handleChange = (event: { target: { name: string; value: string; }; }) => {
         this.setState({
             [event.target.name]: event.target.value
         });
     }
 
-    handleSubmit = event => {
+    handleSubmit = (event: { preventDefault: () => void; }) => {
         event.preventDefault();
 
         this.firstname.current.classList.remove('is-invalid');
@@ -75,7 +73,9 @@ export default class Register extends Component<any, any> {
                 if (error.response.status === 400) {
                     for (let field in error.response.data.error) {
                         let messages = error.response.data.error[field];
+                        // @ts-ignore
                         this[field].current.classList.add('is-invalid');
+                        // @ts-ignore
                         this[field + 'Feedback'].current.innerHTML = messages.join('<br/>');
                     }
                 }
@@ -89,6 +89,8 @@ export default class Register extends Component<any, any> {
         if (this.state.registered) {
             return <Navigate to="/login"/>
         }
+
+        require("./app.css");
         return (
             <div className="form-auth">
                 <div>
